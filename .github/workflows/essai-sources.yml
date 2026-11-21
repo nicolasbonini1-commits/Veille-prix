@@ -1,0 +1,32 @@
+# Essai des sources automatiques (Dealabs, eBay). Se lance à chaque push sur la branche essai-sources
+# (ou à la main). Écrit ses résultats dans la branche « essais-sources », jamais dans « donnees » ni « main ».
+name: essai-sources
+on:
+  push:
+    branches: [essai-sources]
+    paths: [outils/essai_sources.sh, .github/workflows/essai-sources.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: essai-sources
+jobs:
+  essai:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TZ: Europe/Paris
+    steps:
+      - uses: actions/checkout@v5
+      - name: Essai
+        env:
+          EBAY_CLIENT_ID: ${{ secrets.EBAY_CLIENT_ID }}
+          EBAY_CLIENT_SECRET: ${{ secrets.EBAY_CLIENT_SECRET }}
+        run: bash outils/essai_sources.sh /tmp/res; cat /tmp/res/RESULTATS.md
+      - name: Enregistrer dans la branche essais-sources
+        run: |
+          # On ne publie pas les pages de Dealabs dans ce dépôt public : seulement le résumé et robots.txt.
+          rm -f /tmp/res/dealabs/*.html /tmp/res/dealabs/rss_*
+          cd /tmp/res && git init -q && git checkout -q -b essais-sources
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add -A && git commit -qm "essai sources $(date '+%d/%m %H:%M')"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" essais-sources
