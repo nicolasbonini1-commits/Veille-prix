@@ -1,0 +1,24 @@
+{
+  "_lisezmoi": "Liste d'envies, publique. Prix en euros, port compris. Cible = prix_souhaite + 5 % (alerte). Proche = jusqu'à + 10 % (affiché, pas d'alerte). Les champs à null sont à compléter par Nico.",
+  "regles": {
+    "marge_cible": 0.05,
+    "marge_proche": 0.10,
+    "vendeur_note_min_pct": 90,
+    "vendeur_avis_min": 100,
+    "livraison_jours_ouvres_max": 5,
+    "_provisoire": "Notes vendeur et délai : valeurs provisoires, pas encore choisies par Nico. La note eBay est un pourcentage d'avis positifs (0-100), pas une note sur 5 : 90 % est un exemple, à fixer."
+  },
+  "envies": [
+    {
+      "id": "pc-portable",
+      "nom": "PC portable",
+      "recherche": "pc portable 16 go ssd 512",
+      "exclure": ["pièces", "hs", "pour pièces", "écran cassé"],
+      "gtin": null,
+      "prix_souhaite": 300,
+      "date_achat": null,
+      "etats": ["neuf", "occasion", "reconditionné"],
+      "notes": "Usage quotidien, un peu de montage vidéo, Home Assistant et caméras. Mots de recherche et config minimale à valider par Nico."
+    }
+  ]
+}
