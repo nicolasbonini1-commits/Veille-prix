@@ -2,7 +2,7 @@
 
 À lire au début d'une nouvelle conversation, avec `LECONS.md` du dépôt maison3d (leçons générales), `LECONS.md` du dépôt Carte-peche (architecture qui sert de modèle) et `git log -5`.
 Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un sujet clos descendra dans `HISTORIQUE.md`, daté.
-État au 21 nov. 2026, 21 h 55 : squelette sur `main` (21 h 44), **en ligne** sur https://nicolasbonini1-commits.github.io/Veille-prix/ (Pages activé par Nico ; contrôle par la tâche `essai-en-ligne` à 21 h 52 : 5 fichiers = `main` en sha256, captures jour/nuit OK dans `essais-en-ligne`) ; essai des sources fait (branche `essai-sources` → résultats dans `essais-sources`, passage de 21 h 25). Aucune clé ni secret créé.
+État au 21 nov. 2026, 22 h 25 : **skill « veille-prix » écrit et enregistré par Nico** dans son compte claude.ai (pas de copie dans ce dépôt) ; essai du skill prévu cette nuit (tâche planifiée, rapport dans la branche `essais-skill`). Squelette sur `main` (21 h 44), **en ligne** sur https://nicolasbonini1-commits.github.io/Veille-prix/ (Pages activé par Nico ; contrôle par la tâche `essai-en-ligne` à 21 h 52 : 5 fichiers = `main` en sha256, captures jour/nuit OK dans `essais-en-ligne`) ; essai des sources fait (branche `essai-sources` → résultats dans `essais-sources`, passage de 21 h 25). Aucune clé ni secret créé.
 
 ## Le projet
 - Outil perso de veille de prix, moitié appli, moitié agent IA. But de Nico : **centraliser** les recherches pour gagner du temps et les **fiabiliser** (mêmes règles à chaque fois). S'il doit tout faire à la main, l'appli ne sert à rien.
@@ -20,7 +20,7 @@ Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un su
 - Écartés : Amazon (API réservée aux affiliés ayant ≥ 10 ventes en 30 jours), flux Fnac/Darty/Boulanger (réservés aux sites affiliés acceptés), Claude in Chrome sur les sites (robot contraire à leurs règles), tâche planifiée Claude pour lire Gmail.
 - Occasion : deux notes de 1 à 5 étoiles, **avec raisons et niveau de confiance** (faible, moyen, élevé), via un skill « veille-prix » à partir des **captures** de Nico (pas de robot sur Leboncoin, le lien n'est pas ouvert). Aide à la décision, jamais un verdict.
   - Authenticité : on part de 5 ; plafond à 1 si on demande de quitter la messagerie ou le paiement sécurisé, faux mail ou lien de paiement, vendeur à l'étranger ; − 2 photo retrouvée ailleurs ; − 1 prix très bas, compte récent sans avis, incohérence photos/texte ; − 0,5 description floue ; + 0,5 photo avec pseudo et date, écran « À propos », profil ancien bien noté, facture. Poids = choix de Claude [P], à ajuster.
-  - Prix : total = prix + port + frais Leboncoin 4 % (min 0,99 €, à relire sur l'aide officielle). Référence = médiane de ≥ 5 annonces comparables, sinon reconditionné de même config, sinon neuf moins décote [P]. Rapport ≤ 0,80 : 5★ ; 0,80-0,90 : 4★ ; 0,90-1,05 : 3★ ; 1,05-1,15 : 2★ ; au-delà : 1★. Max 2★ si ≥ reconditionné garanti, 1★ si ≥ neuf.
+  - Prix : total = prix + port + frais Leboncoin **5 % du prix hors port + 0,70 €** (CGU leboncoin art. 3.11, lues le 21 nov. ; l'ancien « 4 %, min 0,99 € » venait d'un forum de 2021, périmé). Référence = médiane de ≥ 5 annonces comparables, sinon reconditionné de même config, sinon neuf moins décote [P]. Rapport ≤ 0,80 : 5★ ; 0,80-0,90 : 4★ ; 0,90-1,05 : 3★ ; 1,05-1,15 : 2★ ; au-delà : 1★. Max 2★ si ≥ reconditionné garanti, 1★ si ≥ neuf.
   - Recherche d'image : Google Lens par Nico d'abord ; Cloud Vision (WEB_DETECTION) plus tard, clé dans les secrets GitHub, photos d'annonce dans un dépôt privé, jamais dans la page publique.
 - Coûts : version 1 à 0 € en plus (skill dans le chat, compris dans l'abonnement). Plus tard, agent par API : de l'ordre de 0,05 à 0,40 $ par mois aux volumes prévus.
 
@@ -31,19 +31,24 @@ Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un su
 - CGU (`dealabs.com/page/cgu`, mises à jour le 2 sept. 2026) : rien sur le RSS ni les robots ; interdisent de reproduire le contenu ou de le mettre à disposition de tiers, et son usage sur d'autres sites sans accord (résumé par l'outil de lecture, passage pas relu en entier). Conséquence : ne pas recopier les deals dans le dépôt public. 1er essai (21 h 23) : le fichier de résultats contenait le fil entier par erreur, écrasé à 21 h 25.
 - **eBay** : sauté (secrets `EBAY_CLIENT_ID` / `EBAY_CLIENT_SECRET` pas encore créés). Le script est prêt : forme des secrets, jeton, recherche eBay France, tableau prix / port / note du vendeur.
 
-## Décision du 21 nov., 21 h 55 : recherche web à la demande
-L'appli ne cherche pas sur tout le net (pas de moyen gratuit et légal ; services payants type Google Shopping pas étudiés). Nico accepte d'ajouter au skill « veille-prix » une **recherche à la demande** (« cherche le meilleur prix pour X ») : moteur de recherche, port et vendeur vérifiés, liens et sources donnés, jamais de robot sur les sites.
+## Skill « veille-prix » (écrit le 21 nov., 22 h 15)
+- L'appli ne cherche pas sur tout le net (pas de moyen gratuit et légal). Le skill fait la **recherche à la demande** (« cherche le meilleur prix pour X ») et les **deux notes d'occasion** à partir des captures.
+- Contenu : niveaux de preuve [S] [M] [C] [P] [N] comme Carte-peche ; confiance élevé / moyen / faible ; port introuvable = offre jamais « dans la cible » ; vendeur vérifié par mentions légales, siège UE, e-réputation (DGCCRF) ; seuils lus dans `envies.json`, qui prime.
+- Signes d'arnaque sourcés : sortir de la messagerie ou du paiement sécurisé, moyens de paiement difficiles à tracer (Cybermalveillance via INC, 2025) ; mail « Leboncoin » hors messagerie (Que Choisir) ; vendeur à l'étranger (police de Fribourg, DGCCRF 2022 : preuve plus faible). Tous les poids restent [P].
+- **Règle proposée par Claude, à valider par Nico** : lecture ponctuelle (WebFetch) des pages produit et livraison des marchands ; Dealabs (robots d'IA interdits) et Idealo : résultats du moteur seulement ; Leboncoin : jamais ouvert.
 
 ## Non vérifié
 - Si le seuil de l'alerte Idealo compte le port, et ce que contiennent les mails d'alerte (prix, port, délai, vendeur) : plus gros risque de la lecture des mails.
 - Si l'API eBay donne la note du vendeur et le port (doc : champs `seller.feedbackPercentage`, `shippingOptions.shippingCost`, à confirmer par l'essai).
 - Adresses des boutons Idealo, Leboncoin et Dealabs de la page (marquées « à vérifier ») : à toucher une fois sur l'A55.
 - Alerte prix chez Back Market ; compte de facturation obligatoire pour Cloud Vision (source : forum Google).
+- Seuils vendeur contradictoires : ce fichier dit ≥ 4,5/5 et ≥ 100 avis, `envies.json` dit ≥ 90 % d'avis positifs (eBay) : à trancher par Nico.
+- Main propre avec paiement sécurisé Leboncoin : CGU « 1,99 centimes », coquille probable pour 1,99 €.
 
 ## Prochaine étape
 1. Décision de Nico sur les deals Dealabs dans le dépôt public (recommandé : ne garder que lien, prix, marchand, température ; rien d'autre).
 2. Clé eBay (Production) → relancer `essai-sources`.
-3. Écrire le skill « veille-prix » (recherche à la demande + deux notes d'occasion), dans une nouvelle conversation.
+3. Lire le rapport de l'essai nocturne du skill (branche `essais-skill`, cas réel : PC portable vers 300 €) : contrôler les prix et ports cités, les sites refusés par l'outil, puis valider ou corriger la règle WebFetch et les poids.
 
 ## À faire par Nico (quand on y arrivera, une étape à la fois, jamais de clé dans le chat)
 - Compte développeur eBay et sa clé (secret GitHub).
