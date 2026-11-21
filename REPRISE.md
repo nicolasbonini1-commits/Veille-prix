@@ -2,7 +2,7 @@
 
 À lire au début d'une nouvelle conversation, avec `LECONS.md` du dépôt maison3d (leçons générales), `LECONS.md` du dépôt Carte-peche (architecture qui sert de modèle) et `git log -5`.
 Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un sujet clos descendra dans `HISTORIQUE.md`, daté.
-État au 21 nov. 2026, 21 h 30 : squelette de la page sur la branche `essai-squelette` (pas encore sur `main`, Pages pas activé) ; essai des sources fait (branche `essai-sources` → résultats dans `essais-sources`, passage de 21 h 25). Aucune clé ni secret créé.
+État au 21 nov. 2026, 21 h 55 : squelette sur `main` (21 h 44), **en ligne** sur https://nicolasbonini1-commits.github.io/Veille-prix/ (Pages activé par Nico ; contrôle par la tâche `essai-en-ligne` à 21 h 52 : 5 fichiers = `main` en sha256, captures jour/nuit OK dans `essais-en-ligne`) ; essai des sources fait (branche `essai-sources` → résultats dans `essais-sources`, passage de 21 h 25). Aucune clé ni secret créé.
 
 ## Le projet
 - Outil perso de veille de prix, moitié appli, moitié agent IA. But de Nico : **centraliser** les recherches pour gagner du temps et les **fiabiliser** (mêmes règles à chaque fois). S'il doit tout faire à la main, l'appli ne sert à rien.
@@ -12,7 +12,7 @@ Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un su
 - Ordre des choix : neuf, puis occasion Leboncoin (livraison possible, vendeur bien noté, annonce réelle), puis reconditionné.
 
 ## Décisions (21 nov. 2026)
-- Format : page GitHub Pages, dépôt **public** `nicolasbonini1-commits/veille-prix` (adresse en minuscules). Reprendre l'architecture de Carte-peche : page statique + tâche GitHub qui écrit ses résultats dans une branche `donnees`, **lancée par Home Assistant** (les tâches planifiées GitHub sautent des passages).
+- Format : page GitHub Pages, dépôt **public** `nicolasbonini1-commits/Veille-prix` (V majuscule : `/veille-prix/` → 404 ; raw.githubusercontent accepte les minuscules). Reprendre l'architecture de Carte-peche : page statique + tâche GitHub qui écrit ses résultats dans une branche `donnees`, **lancée par Home Assistant** (les tâches planifiées GitHub sautent des passages).
 - Liste d'envies publique (`envies.json`) : accepté par Nico (seulement des noms de produits et des prix).
 - L'appli surveille, calcule et affiche ; l'agent IA intervient seulement pour juger (même produit ? notes d'une annonce).
 - **Sources automatiques** (aucune alerte à créer) : API eBay Browse (programme développeurs gratuit, recherche par mot-clé ou GTIN, eBay France) ; fil RSS des deals Dealabs **s'il existe et s'il est autorisé** (seul le RSS du magazine a été trouvé).
@@ -31,6 +31,9 @@ Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un su
 - CGU (`dealabs.com/page/cgu`, mises à jour le 2 sept. 2026) : rien sur le RSS ni les robots ; interdisent de reproduire le contenu ou de le mettre à disposition de tiers, et son usage sur d'autres sites sans accord (résumé par l'outil de lecture, passage pas relu en entier). Conséquence : ne pas recopier les deals dans le dépôt public. 1er essai (21 h 23) : le fichier de résultats contenait le fil entier par erreur, écrasé à 21 h 25.
 - **eBay** : sauté (secrets `EBAY_CLIENT_ID` / `EBAY_CLIENT_SECRET` pas encore créés). Le script est prêt : forme des secrets, jeton, recherche eBay France, tableau prix / port / note du vendeur.
 
+## Question de Nico (21 nov., 21 h 51)
+Il pensait que l'appli cherche sur tout le net. Réponse : non (sources automatiques eBay + Dealabs, alertes Idealo + Leboncoin) ; proposé : recherche web à la demande par le skill « veille-prix ». En attente de sa réponse.
+
 ## Non vérifié
 - Si le seuil de l'alerte Idealo compte le port, et ce que contiennent les mails d'alerte (prix, port, délai, vendeur) : plus gros risque de la lecture des mails.
 - Si l'API eBay donne la note du vendeur et le port (doc : champs `seller.feedbackPercentage`, `shippingOptions.shippingCost`, à confirmer par l'essai).
@@ -38,9 +41,8 @@ Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un su
 - Alerte prix chez Back Market ; compte de facturation obligatoire pour Cloud Vision (source : forum Google).
 
 ## Prochaine étape
-1. Accord de Nico → fusion de `essai-squelette` dans `main` + activer Pages (Settings › Pages, branche `main`, racine).
-2. Décision de Nico sur les deals Dealabs dans le dépôt public (recommandé : ne garder que lien, prix, marchand, température ; rien d'autre).
-3. Clé eBay (Production) → relancer `essai-sources`.
+1. Décision de Nico sur les deals Dealabs dans le dépôt public (recommandé : ne garder que lien, prix, marchand, température ; rien d'autre).
+2. Clé eBay (Production) → relancer `essai-sources`.
 
 ## À faire par Nico (quand on y arrivera, une étape à la fois, jamais de clé dans le chat)
 - Compte développeur eBay et sa clé (secret GitHub).
