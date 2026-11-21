@@ -69,6 +69,15 @@ for f in rss_hot rss_new rss_all rss_nouveaux rss_recherche; do
   fi
 done >> "$R"
 
+# Durée couverte par chaque fil (du deal le plus ancien au plus récent) : dit à quelle fréquence il faut le lire.
+{ echo; echo "### Durée couverte par les 30 deals de chaque fil"; echo
+for f in rss_hot rss_new rss_nouveaux; do
+  [ -s "$OUT/dealabs/$f" ] && python3 -c '
+import re,sys,email.utils as u
+t=open(sys.argv[1],errors="ignore").read(); d=[u.parsedate_to_datetime(x) for x in re.findall(r"<pubDate>(.*?)</pubDate>",t)]
+print(f"- {sys.argv[2]} : {len(d)} deals, du {min(d):%d/%m %H:%M} au {max(d):%d/%m %H:%M}, soit {(max(d)-min(d)).total_seconds()/3600:.1f} h" if d else f"- {sys.argv[2]} : aucune date")' "$OUT/dealabs/$f" "$f"
+done; } >> "$R"
+
 # ---------- eBay ----------
 printf "\n%s\n" "## eBay Browse" >> "$R"
 forme() { printf '%s' "$1" | sed -E 's/[A-Za-z0-9]/x/g'; }
