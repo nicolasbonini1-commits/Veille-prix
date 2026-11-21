@@ -63,7 +63,8 @@ fi
 for f in rss_hot rss_new rss_all rss_nouveaux rss_recherche; do
   if grep -q '<item>' "$OUT/dealabs/$f" 2>/dev/null; then
     echo; echo "### Premier élément de $f"; echo '```xml'
-    awk '/<item>/{p=1} p{print} /<\/item>/{exit}' "$OUT/dealabs/$f" | head -40
+    # Le fil tient sur une seule ligne : on coupe le premier <item>, sans sa description, 800 caractères au plus.
+    python3 -c 'import re,sys; t=open(sys.argv[1],errors="ignore").read(); m=re.search(r"<item>.*?</item>",t,re.S); i=re.sub(r"<description>.*?</description>","<description>(retirée)</description>",m.group(0),flags=re.S) if m else "(aucun)"; print(i[:800])' "$OUT/dealabs/$f"
     echo '```'
   fi
 done >> "$R"
