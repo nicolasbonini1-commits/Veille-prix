@@ -1,0 +1,40 @@
+# Contrôle du site publié par Pages : empreintes des fichiers en ligne = fichiers de main ? + capture dans Chrome.
+# Écrit dans la branche « essais-en-ligne », jamais dans main ni donnees.
+name: essai-en-ligne
+on:
+  push:
+    branches: [essai-en-ligne]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  controle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with: { ref: main, path: depot }
+      - name: Comparer et capturer
+        run: |
+          mkdir -p /tmp/r; R=/tmp/r/RESULTATS.md; SITE=https://nicolasbonini1-commits.github.io/Veille-prix
+          echo "# Contrôle du site en ligne — $(TZ=Europe/Paris date '+%d/%m/%Y %H:%M')" > $R
+          echo; echo "| Fichier | Code | Même empreinte que main ? |" >> $R; echo "|---|---|---|" >> $R
+          for f in index.html css/style.css js/app.js envies.json icon.svg; do
+            c=$(curl -sS -m 20 -o /tmp/f -w '%{http_code}' "$SITE/$f")
+            [ "$(sha256sum < /tmp/f)" = "$(sha256sum < depot/$f)" ] && s=oui || s=NON
+            echo "| $f | $c | $s |" >> $R
+          done
+          echo >> $R; echo "Adresse en minuscules (/veille-prix/) : $(curl -sS -m 20 -o /dev/null -w '%{http_code}' https://nicolasbonini1-commits.github.io/veille-prix/)" >> $R
+          echo >> $R; echo "Données brutes, nom en minuscules (raw.githubusercontent.com/…/veille-prix/main/envies.json) : $(curl -sS -m 20 -o /dev/null -w '%{http_code}' https://raw.githubusercontent.com/nicolasbonini1-commits/veille-prix/main/envies.json)" >> $R
+          for t in light dark; do
+            timeout 60 google-chrome --headless=new --disable-gpu --hide-scrollbars --window-size=412,915 \
+              $( [ $t = dark ] && echo --force-dark-mode --blink-settings=preferredColorScheme=0 ) \
+              --virtual-time-budget=5000 --screenshot=/tmp/r/capture_$t.png "$SITE/" 2>/dev/null || echo "capture $t échouée" >> $R
+          done
+          cat $R
+      - name: Enregistrer dans essais-en-ligne
+        run: |
+          cd /tmp/r && git init -q && git checkout -q -b essais-en-ligne
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add -A && git commit -qm "contrôle en ligne $(date '+%d/%m %H:%M')"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" essais-en-ligne
