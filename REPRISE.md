@@ -2,7 +2,7 @@
 
 À lire au début d'une nouvelle conversation, avec `LECONS.md` du dépôt maison3d (leçons générales), `LECONS.md` du dépôt Carte-peche (architecture qui sert de modèle) et `git log -5`.
 Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un sujet clos descendra dans `HISTORIQUE.md`, daté.
-État au 21 nov. 2026, 21 h 15 : dépôt créé par Nico (README seul), accès donné à Claude ; **rien de construit**. Aucune clé ni secret créé.
+État au 21 nov. 2026, 21 h 30 : squelette de la page sur la branche `essai-squelette` (pas encore sur `main`, Pages pas activé) ; essai des sources fait (branche `essai-sources` → résultats dans `essais-sources`, passage de 21 h 25). Aucune clé ni secret créé.
 
 ## Le projet
 - Outil perso de veille de prix, moitié appli, moitié agent IA. But de Nico : **centraliser** les recherches pour gagner du temps et les **fiabiliser** (mêmes règles à chaque fois). S'il doit tout faire à la main, l'appli ne sert à rien.
@@ -24,13 +24,23 @@ Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un su
   - Recherche d'image : Google Lens par Nico d'abord ; Cloud Vision (WEB_DETECTION) plus tard, clé dans les secrets GitHub, photos d'annonce dans un dépôt privé, jamais dans la page publique.
 - Coûts : version 1 à 0 € en plus (skill dans le chat, compris dans l'abonnement). Plus tard, agent par API : de l'ordre de 0,05 à 0,40 $ par mois aux volumes prévus.
 
+## Essai des sources (21 nov., 21 h 23 et 21 h 25, tâche `essai-sources`)
+- **Dealabs** : fils RSS `/rss/hot` (≥ 100°, adresse propre `/rss/tendance`), `/rss/new` = `/rss/nouveaux` : 30 deals chacun, en XML. Pas de fil par mot-clé (`/rss/search` → 404). Chaque deal donne titre (avec la température), catégorie, marchand, prix (pas toujours), lien, date. **Pas le port.**
+- Un samedi soir de Black Week, les 30 deals couvrent 1,9 h (hot) et 1,0 h (nouveaux) : il faut lire les fils au moins toutes les 30 min, sinon des deals passent.
+- robots.txt : `/rss` autorisé pour tous (`Allow: /`) ; `/search` interdit aux robots ; ClaudeBot, GPTBot et autres robots d'IA interdits sur tout le site.
+- CGU (`dealabs.com/page/cgu`, mises à jour le 2 sept. 2026) : rien sur le RSS ni les robots ; interdisent de reproduire le contenu ou de le mettre à disposition de tiers, et son usage sur d'autres sites sans accord (résumé par l'outil de lecture, passage pas relu en entier). Conséquence : ne pas recopier les deals dans le dépôt public. 1er essai (21 h 23) : le fichier de résultats contenait le fil entier par erreur, écrasé à 21 h 25.
+- **eBay** : sauté (secrets `EBAY_CLIENT_ID` / `EBAY_CLIENT_SECRET` pas encore créés). Le script est prêt : forme des secrets, jeton, recherche eBay France, tableau prix / port / note du vendeur.
+
 ## Non vérifié
 - Si le seuil de l'alerte Idealo compte le port, et ce que contiennent les mails d'alerte (prix, port, délai, vendeur) : plus gros risque de la lecture des mails.
-- Si l'API eBay donne la note du vendeur et le port ; existence et autorisation d'un fil RSS des deals Dealabs.
+- Si l'API eBay donne la note du vendeur et le port (doc : champs `seller.feedbackPercentage`, `shippingOptions.shippingCost`, à confirmer par l'essai).
+- Adresses des boutons Idealo, Leboncoin et Dealabs de la page (marquées « à vérifier ») : à toucher une fois sur l'A55.
 - Alerte prix chez Back Market ; compte de facturation obligatoire pour Cloud Vision (source : forum Google).
 
 ## Prochaine étape
-Squelette de la page (thème jour/nuit comme Carte-peche) + `envies.json` + essais de l'API eBay et du fil Dealabs par une tâche GitHub sur une branche d'essai. Une étape à la fois, avec l'accord de Nico.
+1. Accord de Nico → fusion de `essai-squelette` dans `main` + activer Pages (Settings › Pages, branche `main`, racine).
+2. Décision de Nico sur les deals Dealabs dans le dépôt public (recommandé : ne garder que lien, prix, marchand, température ; rien d'autre).
+3. Clé eBay (Production) → relancer `essai-sources`.
 
 ## À faire par Nico (quand on y arrivera, une étape à la fois, jamais de clé dans le chat)
 - Compte développeur eBay et sa clé (secret GitHub).
