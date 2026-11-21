@@ -31,8 +31,8 @@ Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un su
 - CGU (`dealabs.com/page/cgu`, mises à jour le 2 sept. 2026) : rien sur le RSS ni les robots ; interdisent de reproduire le contenu ou de le mettre à disposition de tiers, et son usage sur d'autres sites sans accord (résumé par l'outil de lecture, passage pas relu en entier). Conséquence : ne pas recopier les deals dans le dépôt public. 1er essai (21 h 23) : le fichier de résultats contenait le fil entier par erreur, écrasé à 21 h 25.
 - **eBay** : sauté (secrets `EBAY_CLIENT_ID` / `EBAY_CLIENT_SECRET` pas encore créés). Le script est prêt : forme des secrets, jeton, recherche eBay France, tableau prix / port / note du vendeur.
 
-## Question de Nico (21 nov., 21 h 51)
-Il pensait que l'appli cherche sur tout le net. Réponse : non (sources automatiques eBay + Dealabs, alertes Idealo + Leboncoin) ; proposé : recherche web à la demande par le skill « veille-prix ». En attente de sa réponse.
+## Décision du 21 nov., 21 h 55 : recherche web à la demande
+L'appli ne cherche pas sur tout le net (pas de moyen gratuit et légal ; services payants type Google Shopping pas étudiés). Nico accepte d'ajouter au skill « veille-prix » une **recherche à la demande** (« cherche le meilleur prix pour X ») : moteur de recherche, port et vendeur vérifiés, liens et sources donnés, jamais de robot sur les sites.
 
 ## Non vérifié
 - Si le seuil de l'alerte Idealo compte le port, et ce que contiennent les mails d'alerte (prix, port, délai, vendeur) : plus gros risque de la lecture des mails.
@@ -43,6 +43,7 @@ Il pensait que l'appli cherche sur tout le net. Réponse : non (sources automati
 ## Prochaine étape
 1. Décision de Nico sur les deals Dealabs dans le dépôt public (recommandé : ne garder que lien, prix, marchand, température ; rien d'autre).
 2. Clé eBay (Production) → relancer `essai-sources`.
+3. Écrire le skill « veille-prix » (recherche à la demande + deux notes d'occasion), dans une nouvelle conversation.
 
 ## À faire par Nico (quand on y arrivera, une étape à la fois, jamais de clé dans le chat)
 - Compte développeur eBay et sa clé (secret GitHub).
