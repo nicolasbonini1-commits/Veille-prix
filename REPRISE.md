@@ -2,7 +2,7 @@
 
 À lire au début d'une nouvelle conversation, avec `LECONS.md` du dépôt maison3d (leçons générales), `LECONS.md` du dépôt Carte-peche (architecture qui sert de modèle) et `git log -5`.
 Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un sujet clos descendra dans `HISTORIQUE.md`, daté.
-État au 21 nov. 2026, 22 h 25 : **skill « veille-prix » écrit et enregistré par Nico** dans son compte claude.ai (pas de copie dans ce dépôt) ; essai du skill prévu cette nuit (tâche planifiée, rapport dans la branche `essais-skill`). Squelette sur `main` (21 h 44), **en ligne** sur https://nicolasbonini1-commits.github.io/Veille-prix/ (Pages activé par Nico ; contrôle par la tâche `essai-en-ligne` à 21 h 52 : 5 fichiers = `main` en sha256, captures jour/nuit OK dans `essais-en-ligne`) ; essai des sources fait (branche `essai-sources` → résultats dans `essais-sources`, passage de 21 h 25). Aucune clé ni secret créé.
+État au 22 nov. 2026 : **skill « veille-prix » écrit et enregistré par Nico** dans son compte claude.ai (pas de copie dans ce dépôt) ; **essai du skill fait le 22 nov. à 01 h 40** (voir plus bas, rapport dans la branche `essais-skill`). Squelette sur `main` (21 h 44), **en ligne** sur https://nicolasbonini1-commits.github.io/Veille-prix/ (Pages activé par Nico ; contrôle par la tâche `essai-en-ligne` à 21 h 52 : 5 fichiers = `main` en sha256, captures jour/nuit OK dans `essais-en-ligne`) ; essai des sources fait (branche `essai-sources` → résultats dans `essais-sources`, passage de 21 h 25). Aucune clé ni secret créé.
 
 ## Le projet
 - Outil perso de veille de prix, moitié appli, moitié agent IA. But de Nico : **centraliser** les recherches pour gagner du temps et les **fiabiliser** (mêmes règles à chaque fois). S'il doit tout faire à la main, l'appli ne sert à rien.
@@ -37,6 +37,12 @@ Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un su
 - Signes d'arnaque sourcés : sortir de la messagerie ou du paiement sécurisé, moyens de paiement difficiles à tracer (Cybermalveillance via INC, 2025) ; mail « Leboncoin » hors messagerie (Que Choisir) ; vendeur à l'étranger (police de Fribourg, DGCCRF 2022 : preuve plus faible). Tous les poids restent [P].
 - **Règle proposée par Claude, à valider par Nico** : lecture ponctuelle (WebFetch) des pages produit et livraison des marchands ; Dealabs (robots d'IA interdits) et Idealo : résultats du moteur seulement ; Leboncoin : jamais ouvert.
 
+## Essai du skill, partie A (22 nov., 01 h 40 – 01 h 44, tâche planifiée)
+- Rapport : `essais-skill/2026-11-22-pc-portable.md` (branche `essais-skill`). Config prise : champ `recherche` (16 Go, SSD 512), config minimale pas validée. 15 recherches et lectures.
+- Aucune offre vérifiée ≤ 315 €. Meilleure : HP EliteBook 850 G7 reconditionné, 479,99 € livraison offerte (LDLC, vendeur Refabz), confiance moyenne (vendeur pas vérifié).
+- Refusé par l'outil : **Back Market** (4 pages sur 4). Lus : LDLC, leDénicheur, comparez-malin (prix « dès » sans marchand ni port). Le moteur de recherche ne donne pas les prix, seulement titres et liens.
+- Corrections du skill **proposées, pas appliquées** : config minimale dans `envies.json` (processeur, écran, AZERTY ; exclure `mini pc`, `qwerty`, `qwertz`) ; Back Market traité comme Idealo (lien + capture) ; comparateur = piste, jamais une offre ; ≈ 3 recherches + 8 à 10 lectures ; garder 2 lectures pour vérifier le vendeur de la meilleure offre ; port non vérifié = « proche » au mieux ; finir par un « prix réaliste observé » par état.
+
 ## Non vérifié
 - Si le seuil de l'alerte Idealo compte le port, et ce que contiennent les mails d'alerte (prix, port, délai, vendeur) : plus gros risque de la lecture des mails.
 - Si l'API eBay donne la note du vendeur et le port (doc : champs `seller.feedbackPercentage`, `shippingOptions.shippingCost`, à confirmer par l'essai).
@@ -48,7 +54,7 @@ Garder ce fichier court (≈ 50 lignes) ; quand il y aura de l'historique, un su
 ## Prochaine étape
 1. Décision de Nico sur les deals Dealabs dans le dépôt public (recommandé : ne garder que lien, prix, marchand, température ; rien d'autre).
 2. Clé eBay (Production) → relancer `essai-sources`.
-3. Lire le rapport de l'essai nocturne du skill (branche `essais-skill`, cas réel : PC portable vers 300 €) : contrôler les prix et ports cités, les sites refusés par l'outil, puis valider ou corriger la règle WebFetch et les poids.
+3. Nico valide ou corrige la config minimale du PC et les corrections proposées du skill (rapport de la branche `essais-skill`, prix et ports à contrôler), puis nouvel essai.
 
 ## À faire par Nico (quand on y arrivera, une étape à la fois, jamais de clé dans le chat)
 - Compte développeur eBay et sa clé (secret GitHub).
